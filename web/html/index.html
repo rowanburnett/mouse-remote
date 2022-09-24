@@ -16,6 +16,7 @@ var socket = io();
 function startup() {
   const box = document.getElementById('box');
   box.addEventListener('touchmove', handleMove);
+  box.addEventListener('touchstart', handleStart);
   box.addEventListener('click', (evt) => {
     console.log('clicked')
     socket.emit('mouseClicked')
@@ -24,14 +25,16 @@ function startup() {
 
 document.addEventListener('DOMContentLoaded', startup);
 
+function handleStart(evt) {
+  socket.emit('touchStarted')
+}
+
 function handleMove(evt) {
   console.log('moved')
   evt.preventDefault();
-  const box = document.getElementById('box');
-  let touchPoint = box.touches.item(0);
+  let touchPoint = evt.touches.item(0);
   let touchX = touchPoint.screenX / screen.width;
   let touchY = touchPoint.screenY / screen.height;
-
   socket.emit('mouseMoved', [touchX, touchY]);
 }
 

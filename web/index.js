@@ -11,11 +11,12 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
   socket.on('mouseClicked', () => {
-    console.log('clicked');
     io.emit('mouse_clicked', 'clicked')
   })
+  socket.on('touchStarted', () => {
+    io.emit('touch_started')
+  })
   socket.on('mouseMoved', (data) => {
-    console.log(data);
     io.emit('mouse_moved', data);
   })
 })

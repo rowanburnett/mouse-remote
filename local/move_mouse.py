@@ -1,5 +1,7 @@
 import asyncio
 import socketio
+import mouse
+import pyautogui
 
 sio = socketio.AsyncClient()
 
@@ -11,11 +13,13 @@ async def connect():
 async def mouse_clicked():
     print('clicked')
 
+resolution = pyautogui.size()
 
 @sio.event
 async def mouse_moved(data):
-    x = data[0]
-    y = data[1]
+    x = (data[0] * resolution[0]) # scale to screen size
+    y = (data[1] * resolution[1])
+    mouse.move(x, y)
     print(x, y)
 
 @sio.event

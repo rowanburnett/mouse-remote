@@ -18,7 +18,6 @@ function startup() {
   box.addEventListener('touchmove', handleMove);
   box.addEventListener('touchstart', handleStart);
   box.addEventListener('click', (evt) => {
-    console.log('clicked')
     socket.emit('mouseClicked')
   })
 }
@@ -32,10 +31,17 @@ function handleStart(evt) {
 function handleMove(evt) {
   console.log('moved')
   evt.preventDefault();
+
   let touchPoint = evt.touches.item(0);
   let touchX = touchPoint.screenX / screen.width;
   let touchY = touchPoint.screenY / screen.height;
-  socket.emit('mouseMoved', [touchX, touchY]);
+
+  if (evt.touches.length === 1) {
+    socket.emit('mouseMoved', [touchX, touchY]);
+  }
+  if (evt.touches.length > 1) {
+    socket.emit('mouseScrolled', [touchX, touchY]);
+  }
 }
 
 </script>

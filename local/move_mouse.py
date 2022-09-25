@@ -41,6 +41,15 @@ async def touch_started():
             print(x, y)
             mouse.move(current_x - x, current_y - y)
 
+    @sio.event
+    async def mouse_scrolled(data):
+        global first_y
+        if data[1] > first_y:
+            mouse.wheel(delta = 0.2)
+        if data[1] < first_y:
+            mouse.wheel(delta = -0.2)
+        first_y = data[1]
+
 @sio.event
 async def disconnect():
     print('disconnected from server')

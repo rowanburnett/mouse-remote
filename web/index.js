@@ -19,6 +19,9 @@ io.on('connection', (socket) => {
   socket.on('mouseMoved', (data) => {
     io.emit('mouse_moved', data);
   })
+  socket.on('mouseScrolled', (data) => {
+   io.emit('mouse_scrolled', data);
+ })
 })
 
 server.listen(3000, '0.0.0.0', (err) => {

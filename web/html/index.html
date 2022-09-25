@@ -20,6 +20,9 @@ function startup() {
   box.addEventListener('click', (evt) => {
     socket.emit('mouseClicked')
   })
+  box.addEventListener('dblclick', (evt) => {
+    socket.emit('doubleClicked')
+  })
 }
 
 document.addEventListener('DOMContentLoaded', startup);
@@ -29,7 +32,6 @@ function handleStart(evt) {
 }
 
 function handleMove(evt) {
-  console.log('moved')
   evt.preventDefault();
 
   let touchPoint = evt.touches.item(0);

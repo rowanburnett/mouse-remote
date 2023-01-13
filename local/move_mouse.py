@@ -3,13 +3,13 @@ import socketio
 import mouse
 import pyautogui
 
-sio = socketio.AsyncClient()
+sio = socketio.AsyncClient(reconnection_attempts = 5, reconnection_delay = 10)
 
 resolution = pyautogui.size()
 
 class Cursor:
-    def click(data):
-        mouse.click(button  = 'left')
+    def click():
+        mouse.click(button = 'left')
         print('clicked')
 
     def double_click():
@@ -29,8 +29,8 @@ class Cursor:
             self.first_y = (data[1] * resolution[1])
             self.first_touch = False
         else:
-            x = ((self.first_x - (data[0] * resolution[0])) * 0.6)
-            y = ((self.first_y - (data[1] * resolution[1])) * 0.6)
+            x = ((self.first_x - (data[0] * resolution[0])) * 0.8)
+            y = ((self.first_y - (data[1] * resolution[1])) * 0.8)
             mouse.move(self.current_x - x, self.current_y - y)
 
     def scroll(self, data):
@@ -46,36 +46,50 @@ class Cursor:
 cursor = Cursor()
 
 @sio.event
-async def connect():
+def connect():
     print('connection established')
 
 @sio.event
-async def mouse_clicked(data):
+def mouse_clicked():
     cursor.click()
 
 @sio.event
-async def double_clicked():
+def double_clicked():
     cursor.double_click()
 
 @sio.event
-async def touch_started():
+def touch_started():
     cursor.touch()
 
 @sio.event
-async def mouse_moved(data):
+def mouse_moved(data):
     cursor.move(data)
 
 @sio.event
-async def mouse_scrolled(data):
+def mouse_scrolled(data):
     cursor.scroll(data)
 
 @sio.event
-async def disconnect():
+def disconnect():
     print('disconnected from server')
 
 async def main():
-    await sio.connect('https://mouse-remote.onrender.com/')
+    connected = False
+    while not connected:
+        try:
+            await sio.connect('https://mouse-remote.onrender.com/')
+        except socketio.exceptions.ConnectionError as err:
+            print("connection error: ", err)
+            print("retrying...")
+            await sio.sleep(5)
+        else:
+            connected = True
     await sio.wait()
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("exiting...")
+        
+    

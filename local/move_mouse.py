@@ -8,7 +8,7 @@ sio = socketio.AsyncClient(reconnection_attempts = 5, reconnection_delay = 10)
 resolution = pyautogui.size()
 
 class Cursor:
-    def click():
+    def click(self):
         mouse.click(button = 'left')
         print('clicked')
 
@@ -46,8 +46,15 @@ class Cursor:
 cursor = Cursor()
 
 @sio.event
-def connect():
-    print('connection established')
+async def connect():
+    try:
+        print('connection established')
+        print('choose a password:')
+        password = input()
+        await sio.emit('password', password)
+    except:
+        print('connection error')
+    
 
 @sio.event
 def mouse_clicked():

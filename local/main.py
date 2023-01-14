@@ -1,5 +1,6 @@
 import asyncio
 import socketio
+from PyQt6.QtWidgets import QApplication, QPushButton, QVBoxLayout, QWidget, QLineEdit
 from cursor import Cursor
 
 sio = socketio.AsyncClient(reconnection_attempts = 5, reconnection_delay = 10)
@@ -51,10 +52,26 @@ async def main():
         else:
             connected = True
     await sio.wait()
+class MainWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        layout = QVBoxLayout()
+        self.password = QLineEdit()
+        self.password.setText('password')
+        self.password.setReadOnly(True)
+        self.button = QPushButton('Connect')
+        self.button.clicked.connect(lambda:asyncio.run(main))
+        layout.addWidget(self.password)
+        layout.addWidget(self.button)
+        self.setLayout(layout)
 
 if __name__ == '__main__':
     try:
-        asyncio.run(main())
+        app = QApplication(sys.argv)
+        window = MainWindow()
+        window.show()
+        sys.exit(app.exec())
+
     except KeyboardInterrupt:
         print("exiting...")
         

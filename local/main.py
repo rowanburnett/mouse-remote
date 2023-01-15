@@ -57,13 +57,20 @@ class MainWindow(QWidget):
         super().__init__()
         layout = QVBoxLayout()
         self.password = QLineEdit()
-        self.password.setText('password')
+        self.password.setText(user.password)
         self.password.setReadOnly(True)
         self.button = QPushButton('Connect')
         self.button.clicked.connect(lambda:asyncio.run(main))
+        self.passwordButton = QPushButton('New password')
+        self.passwordButton.clicked.connect(lambda:self.change_password())
+        self.connectButton = QPushButton('Connect')
+        self.connectButton.clicked.connect(lambda:self.connect())
         layout.addWidget(self.password)
         layout.addWidget(self.button)
         self.setLayout(layout)
+    def change_password(self):
+        user.generate_password(20)
+        self.password.setText(user.password)
 
 if __name__ == '__main__':
     try:
@@ -73,6 +80,6 @@ if __name__ == '__main__':
         sys.exit(app.exec())
 
     except KeyboardInterrupt:
-        print("exiting...")
+        print('exiting...')
         
     

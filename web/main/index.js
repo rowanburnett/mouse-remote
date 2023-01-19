@@ -7,11 +7,23 @@ function startup() {
     const box = document.getElementById('box');
     box.addEventListener('touchmove', handleMove);
     box.addEventListener('touchstart', handleStart);
-    box.addEventListener('click', (evt) => {
-        socket.emit('mouseClicked', clientPassword)
+
+    box.addEventListener('click', () => {
+        socket.emit('leftClicked', clientPassword)
     })
-    box.addEventListener('dblclick', (evt) => {
+
+    box.addEventListener('dblclick', () => {
         socket.emit('doubleClicked', clientPassword)
+    })
+
+    const leftMouse = document.getElementById('left-mouse')
+    leftMouse.addEventListener('click', () => {
+        socket.emit('leftClicked', clientPassword)
+    })
+
+    const rightMouse = document.getElementById('right-mouse')
+    rightMouse.addEventListener('click', () => {
+        socket.emit('rightClicked', clientPassword)
     })
 
     const form = document.getElementById('form')

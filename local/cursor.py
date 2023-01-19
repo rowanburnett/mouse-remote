@@ -4,13 +4,14 @@ from pyautogui import size
 resolution = size()
 
 class Cursor:
-    def click(self):
+    def left_click(self):
         mouse.click(button = 'left')
-        print('clicked')
 
-    def double_click():
+    def right_click(self):
+        mouse.click(button = 'right')
+
+    def double_click(self):
         mouse.double_click(button = 'left')
-        print('double clicked')
 
     def touch(self):
         self.first_touch = True

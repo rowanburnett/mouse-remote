@@ -16,9 +16,11 @@ io.on('connection', (socket) => {
     socket.join(password);
   })
 
-  socket.on('mouseClicked', (id) => {
-    console.log(id)
-    io.to(id).emit('mouse_clicked');
+  socket.on('leftClicked', (id) => {
+    io.to(id).emit('left_clicked');
+  })
+  socket.on('rightClicked', (id) => {
+    io.to(id).emit('right_clicked');
   })
   socket.on('doubleClicked', (id) => {
     io.to(id).emit('double_clicked');

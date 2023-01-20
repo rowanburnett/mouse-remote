@@ -4,15 +4,15 @@ let clientPassword;
 function startup() {
     setPassword();
 
-    const box = document.getElementById('box');
-    box.addEventListener('touchmove', handleMove);
-    box.addEventListener('touchstart', handleStart);
+    const touchpad = document.getElementById('touchpad');
+    touchpad.addEventListener('touchmove', handleMove);
+    touchpad.addEventListener('touchstart', handleStart);
 
-    box.addEventListener('click', () => {
+    touchpad.addEventListener('click', () => {
         socket.emit('leftClicked', clientPassword)
     })
 
-    box.addEventListener('dblclick', () => {
+    touchpad.addEventListener('dblclick', () => {
         socket.emit('doubleClicked', clientPassword)
     })
 
@@ -43,7 +43,7 @@ function setPassword() {
             .find((row) => row.startsWith('password='))
             ?.split('=')[1];
     } catch(err) {
-        console.log(err);
+        console.log(err); 
     }
 }
 

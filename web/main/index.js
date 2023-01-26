@@ -30,7 +30,7 @@ function startup() {
     form.addEventListener('submit', (evt) => {
         evt.preventDefault();
         let password = evt.currentTarget.password.value;
-        document.cookie = `password=${password}`
+        document.cookie = `password=${password}; max-age=${60*60*24*365}; Secure`
         setPassword();
         evt.currentTarget.password.value = '';
     })

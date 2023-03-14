@@ -32,8 +32,11 @@ io.on('connection', (socket) => {
     io.to(id).emit('mouse_moved', data);
   })
   socket.on('mouseScrolled', (id, data) => {
-   io.to(id).emit('mouse_scrolled', data);
- })
+    io.to(id).emit('mouse_scrolled', data);
+  })
+  socket.on('keyPressed', (id, key) => {
+    io.to(id).emit('key_pressed', key);
+  })
 })
 
 server.listen(process.env.PORT, (err) => {

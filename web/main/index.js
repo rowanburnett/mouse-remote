@@ -17,8 +17,14 @@ function startup() {
     })
 
     const keyboardButton = document.getElementById('keyboard-button')
+    const textInput = document.getElementById('text-input');
     keyboardButton.addEventListener('click', () => {
-        document.getElementById('text-input').focus();
+        textInput.focus();
+    })
+
+    textInput.addEventListener('input', (evt) => {
+        socket.emit('keyPressed', clientPassword, evt.target.value);
+        evt.target.value = '';
     })
 
     const leftMouse = document.getElementById('left-mouse')

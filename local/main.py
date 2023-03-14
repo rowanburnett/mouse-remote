@@ -3,6 +3,7 @@ from PyQt6.QtCore import QThread, QObject, pyqtSignal
 from PyQt6.QtWidgets import QApplication, QPushButton, QVBoxLayout, QWidget, QLineEdit
 from cursor import Cursor
 from user import User
+import pyautogui
 import sys
 
 class Connection(QObject):
@@ -19,6 +20,7 @@ class Connection(QObject):
         self.sio.on('touch_started', self.touch_started)
         self.sio.on('mouse_moved', self.mouse_moved)
         self.sio.on('mouse_scrolled', self.mouse_scrolled)
+        self.sio.on('key_pressed', self.key_pressed)
         self.sio.on('disconnect', self.disconnect)
     
     def send_password(self):
@@ -67,6 +69,10 @@ class Connection(QObject):
 
     def mouse_scrolled(self, data):
         cursor.scroll(data)
+
+    def key_pressed(self, key):
+        print(key)
+        pyautogui.write(key)
 
     def disconnect(self):
         print('disconnected from server')

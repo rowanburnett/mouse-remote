@@ -16,6 +16,11 @@ function startup() {
         socket.emit('doubleClicked', clientPassword)
     })
 
+    const keyboardButton = document.getElementById('keyboard-button')
+    keyboardButton.addEventListener('click', () => {
+        document.getElementById('text-input').focus();
+    })
+
     const leftMouse = document.getElementById('left-mouse')
     leftMouse.addEventListener('click', () => {
         socket.emit('leftClicked', clientPassword)

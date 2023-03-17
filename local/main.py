@@ -3,7 +3,7 @@ from PyQt6.QtCore import QThread, QObject, pyqtSignal
 from PyQt6.QtWidgets import QApplication, QPushButton, QVBoxLayout, QWidget, QLineEdit
 from cursor import Cursor
 from user import User
-import pyautogui
+from keyboard import Keyboard
 import sys
 
 class Connection(QObject):
@@ -71,8 +71,7 @@ class Connection(QObject):
         cursor.scroll(data)
 
     def key_pressed(self, key):
-        print(key)
-        pyautogui.write(key)
+        keyboard.type(key)
 
     def disconnect(self):
         print('disconnected from server')
@@ -129,6 +128,7 @@ class MainWindow(QWidget):
 if __name__ == '__main__':
     cursor = Cursor()
     user = User()
+    keyboard = Keyboard()
     
     app = QApplication(sys.argv)
     window = MainWindow()

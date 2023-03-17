@@ -22,9 +22,14 @@ function startup() {
         textInput.focus();
     })
 
-    textInput.addEventListener('input', (evt) => {
-        socket.emit('keyPressed', clientPassword, evt.target.value);
-        evt.target.value = '';
+    textInput.addEventListener('keydown', (evt) => { // doesn't work for characters in chrome??
+        if (evt.key === 'Shift' || evt.key === 'Alt' || evt.key === 'Control') {
+            return;
+        } else {
+            console.log(evt.key);
+            socket.emit('keyPressed', clientPassword, evt.key);
+            evt.target.value = '';
+        }
     })
 
     const leftMouse = document.getElementById('left-mouse')

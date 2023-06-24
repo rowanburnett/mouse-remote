@@ -23,13 +23,14 @@ function startup() {
     })
 
     textInput.addEventListener('keydown', (evt) => { // doesn't work for characters in chrome??
-        if (evt.key === 'Enter') {
+        if (evt.key === 'Enter' || evt.key === 'Backspace') {
             socket.emit('keyPressed', clientPassword, evt.key);
         }
     })
 
     let startComposition;
     
+
     textInput.addEventListener('focus', () => {
         startComposition = true;
     })

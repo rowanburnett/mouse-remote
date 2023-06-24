@@ -1,7 +1,7 @@
 import pyautogui
 
 class Keyboard:
-    def type(self, key):
+    def type(self, input):
         match key:
             case 'Backspace':
                 pyautogui.press('backspace')
@@ -16,4 +16,7 @@ class Keyboard:
             case 'ArrowDown':
                 pyautogui.press('down')
             case _:
-                pyautogui.write(key)
+                for character in input:
+                    pyautogui.write(character) 
+                    # not sure why this needs to be done like this but doesn't type multiple characters correctly otherwise
+                    

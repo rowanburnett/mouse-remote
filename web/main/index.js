@@ -4,6 +4,12 @@ let clientPassword;
 function startup() {
     setPassword();
 
+    const keyboard = document.getElementById('keyboard-button');
+    const textInput = document.getElementById('text-input');
+    keyboard.addEventListener('click', () => {
+        textInput.focus();
+    })
+    
     const touchpad = document.getElementById('touchpad');
     touchpad.addEventListener('touchmove', handleMove);
     touchpad.addEventListener('touchstart', handleStart);
@@ -16,20 +22,42 @@ function startup() {
         socket.emit('doubleClicked', clientPassword)
     })
 
-    const keyboardButton = document.getElementById('keyboard-button')
-    const textInput = document.getElementById('text-input');
-    keyboardButton.addEventListener('click', () => {
-        textInput.focus();
+    textInput.addEventListener('keydown', (evt) => { // doesn't work for characters in chrome??
+        if (evt.key === 'Enter') {
+            socket.emit('keyPressed', clientPassword, evt.key);
+        }
     })
 
-    textInput.addEventListener('keydown', (evt) => { // doesn't work for characters in chrome??
-        if (evt.key === 'Shift' || evt.key === 'Alt' || evt.key === 'Control') {
-            return;
+    let startComposition;
+    
+    textInput.addEventListener('focus', () => {
+        startComposition = true;
+    })
+    
+    textInput.addEventListener('input', (evt) => {
+        let composition;
+        if (evt.data === null) {
+            return
+        } else if (evt.inputType === 'deleteContentBackward') {
+            socket.emit('keyPressed', clientPassword, 'Backspace');
+        } else if (evt.inputType === 'insertCompositionText') { // firefox uses this for autocorrect
+            if (startComposition) {
+                composition = evt.data;
+                socket.emit('keyPressed', clientPassword, composition);
+                startComposition = false;
+            } else if (evt.data.length > composition.length) {
+                composition = evt.data.slice(composition.length - 1);
+                socket.emit('keyPressed', clientPassword, composition);
+            }
         } else {
-            console.log(evt.key);
-            socket.emit('keyPressed', clientPassword, evt.key);
-            evt.target.value = '';
+            startComposition = true;
+            // evt.target.value = '';
+            socket.emit('keyPressed', clientPassword, evt.data);
         }
+    })
+
+    textInput.addEventListener('focusout', (evt) => {
+        evt.target.value = '';
     })
 
     const leftMouse = document.getElementById('left-mouse')

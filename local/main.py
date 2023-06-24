@@ -70,8 +70,8 @@ class Connection(QObject):
     def mouse_scrolled(self, data):
         cursor.scroll(data)
 
-    def key_pressed(self, key):
-        keyboard.type(key)
+    def key_pressed(self, input):
+        keyboard.type(input)
 
     def disconnect(self):
         print('disconnected from server')

@@ -36,10 +36,11 @@ function startup() {
     
     textInput.addEventListener('input', (evt) => {
         let composition;
-        if (evt.data === null) {
-            return
-        } else if (evt.inputType === 'deleteContentBackward') {
+        if (evt.inputType === 'deleteContentBackward') {
             socket.emit('keyPressed', clientPassword, 'Backspace');
+        if (evt.inputType === 'deleteContentForward') {
+            socket.emit('keyPressed', clientPassword, 'Delete');
+        }
         } else if (evt.inputType === 'insertCompositionText') { // firefox uses this for autocorrect
             if (startComposition) {
                 composition = evt.data;

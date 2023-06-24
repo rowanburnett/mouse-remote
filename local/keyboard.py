@@ -7,6 +7,8 @@ class Keyboard:
                 pyautogui.press('backspace')
             case 'Enter':
                 pyautogui.press('enter')
+            case 'Delete':
+                pyautogui.press('delete')
             case 'ArrowRight':
                 pyautogui.press('right')
             case 'ArrowLeft':
@@ -19,4 +21,3 @@ class Keyboard:
                 for character in input:
                     pyautogui.write(character) 
                     # not sure why this needs to be done like this but doesn't type multiple characters correctly otherwise
-                    

@@ -38,7 +38,7 @@ io.on('connection', (socket) => {
     io.to(id).emit('key_pressed', key);
   })
   socket.on('heartbeat', () => {
-    print('heartbeat received')
+    console.log('heartbeat received');
   })
 })
 

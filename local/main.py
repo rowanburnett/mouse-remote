@@ -39,6 +39,11 @@ class Connection(QObject):
                 self.sio.sleep(5)
             self.sio.wait()
 
+    def heartbeat(self):
+        self.sio.emit('heartbeat')
+        self.sio.sleep(5)
+        self.heartbeat()
+
     def connect(self):
         print('connection established')
         self.connected = True
@@ -47,6 +52,7 @@ class Connection(QObject):
             self.send_password()
         except socketio.exceptions.ConnectionError as err:
             print(err)
+        self.heartbeat()
         self.sio.wait()
 
     def close(self):

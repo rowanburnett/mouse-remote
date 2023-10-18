@@ -37,6 +37,9 @@ io.on('connection', (socket) => {
   socket.on('keyPressed', (id, key) => {
     io.to(id).emit('key_pressed', key);
   })
+  socket.on('heartbeat', () => {
+    print('heartbeat received')
+  })
 })
 
 server.listen(process.env.PORT, (err) => {
